@@ -16,7 +16,7 @@ COMPOUND REPORT CARDS - See end of document for description of Idea#2 (may not b
 
 RESOURCES - More resources on bioactive compounds/entities for research
 
-API - https://www.ebi.ac.uk/chembl/api/data/activity/
+API -https://www.ebi.ac.uk/chembl/api/data/activity/search?q=[enter_target_chem_id]
 
 **What is ChEMBL?:**
 “ChEMBL is a manually curated database of bioactivity data on small drug-like molecules, used by drug discovery scientists. Among many access methods, a REST API provides programmatic access, allowing the remote retrieval of ChEMBL data and its integration into other applications. This approach allows scientists to move from a world where they go to the ChEMBL web site to search for relevant data, to one where ChEMBL data can be simply integrated into their everyday tools and work environment.”
