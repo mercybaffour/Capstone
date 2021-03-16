@@ -16,7 +16,7 @@ COMPOUND REPORT CARDS - See end of document for description of Idea#2 (may not b
 
 RESOURCES - More resources on bioactive compounds/entities for research
 
-API -https://www.ebi.ac.uk/chembl/api/data/activity/search?q=[enter_target_chem_id]
+API -https://www.ebi.ac.uk/chembl/api/data/activity/search?q=[enter_target_chembl_id]
 
 **What is ChEMBL?:**
 “ChEMBL is a manually curated database of bioactivity data on small drug-like molecules, used by drug discovery scientists. Among many access methods, a REST API provides programmatic access, allowing the remote retrieval of ChEMBL data and its integration into other applications. This approach allows scientists to move from a world where they go to the ChEMBL web site to search for relevant data, to one where ChEMBL data can be simply integrated into their everyday tools and work environment.”
@@ -32,7 +32,7 @@ ChEMBL web services provide access to a wide range of data types from the ChEMBL
 Select and retrieve bioactivity data for a target protein/organism. The example we’ll use to demonstrate this phase is SARS coronavirus 3C-like proteinase.
 target_chembl_id - ‘CHEMBL2927’ (unique identification of target)
 Retrieve only bioactivity data for compounds that target coronavirus 3C-like proteinase (CHEMBL3927) that are reported as IC50 value.
-Select/filter for standard_type=”IC50” (bioactivity unit types)
+Select/filter for type=”IC50” (bioactivity unit types)
 Notice standard_value (this describes the potency of drug; the lower the better (a lower drug concentration provides an inhibitory effect/ inhibitory concentration at 50% will have a low concentration)
 
 **Data Pre-Processing of the bioactivity data:**
