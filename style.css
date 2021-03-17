@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+.navbar-brand img {
+    height: 50px;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.jumbotron {
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5)
+      ), url("images/thisisengineering.jpg");
+    background-size: cover;
+    height: 500px;
+}
+
+
+
+/*---Media Queries --*/
+@media (max-width: 992px) {
+
+}
+@media (max-width: 768px) {
+
+}
+@media (max-width: 576px) {
+
+}
