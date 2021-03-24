@@ -19,6 +19,15 @@ img {
     height: 500px;
 }
 
+.icon {
+    width: 50%;
+    height: auto;
+}
+
+.spacing {
+    padding-top: 5%;
+}
+
 
 
 /*---Media Queries --*/

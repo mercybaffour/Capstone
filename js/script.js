@@ -11,10 +11,15 @@
 7. Transform returned objects into CSV format.
 8. Have a function that allows user to download csv.
 
-To Do Checklist
+To Do Checklist:
+Have AJAX call as separate function.
+Line 27-45 as separate function with parsed data as parameter.
+Make sure to call each function!
 On-click of button, completely run AJAX call and its callback functions. Have another function to have a dynamic URL to reflect user's target ID.
 Have another javascript file so that on click of button, AJAX call runs and report card is displayed.
 */
+
+
 
 //AJAX Call/Request
 var xhr = new XMLHttpRequest();
@@ -32,13 +37,13 @@ xhr.onreadystatechange = function() {
     console.log(content);
 
     //Browser prompting user to download CSV file
-    var a         = document.createElement('a');
-    a.href        = 'data:attachment/csv,' +  encodeURIComponent(content);
-    a.target      = '_blank';
-    a.download    = 'myFile.csv';
+    // var a         = document.createElement('a');
+    // a.href        = 'data:attachment/csv,' +  encodeURIComponent(content);
+    // a.target      = '_blank';
+    // a.download    = 'myFile.csv';
 
-    document.body.appendChild(a);
-    a.click();
+    // document.body.appendChild(a);
+    // a.click();
     }
 }
 
