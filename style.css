@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
+html, body {
+    height: 100%;
+    width: 100%;
+    color: #222;
+
+}
+
+.navbar-nav li {
+    padding-right: 20px;
+}
+
 .navbar-brand img {
     height: 50px;
 }
@@ -35,7 +46,9 @@ img {
 
 }
 @media (max-width: 768px) {
-
+    #about-author {
+        text-align: center;
+    }
 }
 @media (max-width: 576px) {
 
