@@ -10,45 +10,50 @@
         6c. Result: each returned object will characterize a drug-like compound with these four properties.
 7. Transform returned objects into CSV format.
 8. Have a function that allows user to download csv.
-
-To Do Checklist:
-Have AJAX call as separate function.
-Line 27-45 as separate function with parsed data as parameter.
-Make sure to call each function!
-On-click of button, completely run AJAX call and its callback functions. Have another function to have a dynamic URL to reflect user's target ID.
-Have another javascript file so that on click of button, AJAX call runs and report card is displayed.
 */
 
 
+//Event Listener on Download CSV Button
+function onClickCSV(){
+    let input = document.getElementById('target');
+    let url = "https://www.ebi.ac.uk/chembl/api/data/activity/search.json?limit=100&q=";
+    let button = document.getElementById('csvbutton');
+    let parsed = [];
+    button.addEventListener('click', event => {
+        event.preventDefault();
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4 && xhr.status === 200) {
+                parsed = JSON.parse(this.responseText);
+                console.log(parsed);
+                let activities = parsed.activities;
+                console.log(activities);
+                let filteredArray = filterArray(activities);
+                let jsonObject = classifyActivity(filteredArray);
+                console.log(jsonObject);
+                displayStructure(jsonObject);
+                let mdArray = toArrayOfArrays(jsonObject);
+                console.log(mdArray);
+                let dataset = ConvertToCSV(mdArray);
+                console.log(dataset);
 
-//AJAX Call/Request
-var xhr = new XMLHttpRequest();
-xhr.onreadystatechange = function() {
-    if(xhr.readyState === 4 && xhr.status === 200) {
-    let parsed = JSON.parse(this.responseText);
-    let activities = parsed.activities;
-    console.log(activities);
-    let filteredArray = filterArray(activities);
-    let jsonObject = classifyActivity(filteredArray);
-    console.log(jsonObject);
-    let mdArray = toArrayOfArrays(jsonObject);
-    console.log(mdArray);
-    let content = ConvertToCSV(mdArray);
-    console.log(content);
+                //Browser allowing user to download CSV file
+                var a         = document.createElement('a');
+                a.href        = 'data:attachment/csv,' +  encodeURIComponent(dataset);
+                a.target      = '_blank';
+                a.download    = 'myFile.csv';
 
-    //Browser prompting user to download CSV file
-    // var a         = document.createElement('a');
-    // a.href        = 'data:attachment/csv,' +  encodeURIComponent(content);
-    // a.target      = '_blank';
-    // a.download    = 'myFile.csv';
-
-    // document.body.appendChild(a);
-    // a.click();
-    }
+                document.body.appendChild(a);
+                a.click();
+            }
+        }
+        xhr.open("GET", url + input.value);
+        xhr.send();
+    });
 }
 
-xhr.open("GET", "https://www.ebi.ac.uk/chembl/api/data/activity/search.json?limit=100&q=CHEMBL3927");
-xhr.send();
+//Calling sequence of created functions that manipulate data from activity API on click of button.
+onClickCSV();
 
 //Filter array with type = "IC50", and return new array with 4 relevant properties.
 function filterArray(arr){
@@ -79,6 +84,27 @@ function classifyActivity(arr){
     return arr;
 }
 
+//Display list of molecules with their canonical smiles and link to structures
+function displayStructure(arr){
+    let ul = document.createElement('ul');
+    ul.style.listStyle = "none";
+    let div = document.getElementById('renderList');
+    div.appendChild(ul);
+    for(let i=0; i<arr.length; i++){
+        let molecule = document.createElement('li');
+        molecule.textContent = arr[i].molecule_chembl_id
+        molecule.style.fontWeight = "bold";
+        ul.appendChild(molecule);
+        let smiles = document.createElement('li');
+        smiles.textContent = arr[i].canonical_smiles
+        ul.appendChild(smiles);
+        var link = document.createElement('a');
+        var linkText = document.createTextNode("3D Structure");
+        link.setAttribute('href', "https://chemapps.stolaf.edu/jmol/jmol.php?model=" + smiles.textContent);
+        link.appendChild(linkText);
+        ul.appendChild(link);
+    }
+}
 
 //Array of Objects to Array of Arrays
 function toArrayOfArrays(input){
@@ -90,9 +116,23 @@ function toArrayOfArrays(input){
     return output;
 }
 
+
+// //Duplicate Deletion
+// function deleteDuplicates(largeArray){
+//     let stringArray = largeArray.map(JSON.stringify);
+//     console.log(stringArray);
+//     let uniqueStringArray = new Set(stringArray);
+//     console.log(uniqueStringArray);
+//     let uniqueArray = Array.from(uniqueStringArray, JSON.parse);
+//     console.log(uniqueArray);
+//     return uniqueArray;
+// }
+
 //Convert to CSV format
 function ConvertToCSV(arr){
     let csvContent = "data:text/csv;charset=utf-8,"
         + arr.map(e => e.join(",")).join("\n");
     return csvContent;
 }
+
+

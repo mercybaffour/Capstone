@@ -6,6 +6,27 @@ html, body {
     color: #222;
 
 }
+/* Navigation area */
+.nav-item .nav-link{
+    font-weight: 500;
+    color: black;
+}
+
+.navbar-nav .active a{
+    background-color: #36096d;
+    background-image: linear-gradient(315deg, #36096d 0%, #37d5d6 74%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.navbar-nav a:hover {
+    background-color: #36096d;
+    background-image: linear-gradient(315deg, #36096d 0%, #37d5d6 74%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
 .navbar-nav li {
     padding-right: 20px;
@@ -21,15 +42,38 @@ img {
     height: auto;
 }
 
-.jumbotron {
-    background-image: linear-gradient(
-        rgba(0, 0, 0, 0.5),
-        rgba(0, 0, 0, 0.5)
-      ), url("images/thisisengineering.jpg");
+/* Jumbotron area */
+#jumbotron-index {
+    background-image: url("images/abstract.jpg");
     background-size: cover;
+    background-repeat: no-repeat;
+    height: 600px;
+}
+
+#jumbotron-feature {
+    background-image: url("images/abstract.jpg");
+    background-size: 50%;
+    background-repeat: no-repeat;
     height: 500px;
 }
 
+.button {
+    border: 3px solid transparent;
+    border-radius: 8px;
+    background: linear-gradient(315deg, #36096d 0%, #37d5d6 74%);
+    background-clip: padding-box;
+    color: whitesmoke;
+}
+
+.button:hover {
+    background: whitesmoke;
+    background-clip: padding-box;
+    color: black;
+    font-weight: bold;
+}
+
+
+/* Three-Column Section */
 .icon {
     width: 50%;
     height: auto;
@@ -39,6 +83,15 @@ img {
     padding-top: 5%;
 }
 
+/* Features Page */
+
+.input-box{
+    margin-left: 60%;
+}
+
+#feature-title{
+    letter-spacing: 16px;
+}
 
 
 /*---Media Queries --*/
