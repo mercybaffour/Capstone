@@ -31,15 +31,18 @@ function fetchData(){
         .catch(err => console.log('failed', err))
 }
 
+console.log(fetchData());
+
 async function manipulateData(){
     let data = await fetchData();
     console.log(data);
+    let activities = [];
     data.then((array) => {
         console.log(array);
-        let activities = array.activities;
+        activities = array.activities;
         console.log(activities);
-        return activities
-    });
+        return activities;
+    })
 }
 
 //Filter array with type = "IC50", and return new array with 4 relevant properties.
@@ -95,15 +98,17 @@ async function displayStructure(){
     }
 }
 
+displayStructure();
+
 //Array of Objects to Array of Arrays
 async function toArrayOfArrays(){
     let input = await classifyActivity();
-    let output = input.map(function(obj) {
+    input.map(function(obj) {
         return Object.keys(obj).sort().map(function(key) {
             return obj[key];
         });
     });
-    return output;
+    return input;
 }
 
 //Convert to CSV format
@@ -112,6 +117,7 @@ async function ConvertToCSV(){
     let csvContent = "data:text/csv;charset=utf-8,"
         + arr.map(inner => inner.join(",")).join("\n");
     return csvContent;
+
 }
 
 async function downloadFile(){
