@@ -110,13 +110,13 @@ async function toArrayOfArrays(){
 async function ConvertToCSV(){
     let arr = await toArrayOfArrays();
     let csvContent = "data:text/csv;charset=utf-8,"
-        + arr.map(e => e.join(",")).join("\n");
+        + arr.map(inner => inner.join(",")).join("\n");
     return csvContent;
 }
 
 async function downloadFile(){
     let dataset = await ConvertToCSV();
-    var a = document.createElement('a');
+    let a = document.createElement('a');
     a.href = 'data:attachment/csv,' +  encodeURIComponent(dataset);
     a.target = '_blank';
     a.download = 'myFile.csv';
