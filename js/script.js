@@ -13,42 +13,36 @@
 */
 
 
-
 //Event Listener on Download CSV Button
 function onClickCSV(){
     let button = document.getElementById('csvbutton');
-    button.addEventListener('click', fetchData);
+    return button.addEventListener('click', async (evt) =>  {
+        evt.preventDefault();
+        let input = document.getElementById('target');
+        let url = "https://www.ebi.ac.uk/chembl/api/data/activity/search.json?limit=100&q=" + input.value;
+        let data;
+        try {
+            let res = await fetch(url);
+            data = await res.json();
+        } catch (err) {
+            console.log('failed', err);
+        }
+        return data;
+    });
 }
 
-//Calling sequence of created functions that manipulate data from activity API on click of button.
-onClickCSV();
-
-function fetchData(){
-    let input = document.getElementById('target');
-    let url = "https://www.ebi.ac.uk/chembl/api/data/activity/search.json?limit=100&q=" + input.value;
-    return fetch(url)
-        .then(response => response.json())
-        .catch(err => console.log('failed', err))
-}
-
-console.log(fetchData());
-
+//Extract activities array property from response body
 async function manipulateData(){
-    let data = await fetchData();
-    console.log(data);
-    let activities = [];
-    data.then((array) => {
-        console.log(array);
-        activities = array.activities;
-        console.log(activities);
-        return activities;
-    })
+    let data = await onClickCSV() ;
+    let activities = data.activities;
+    console.log(activities);
+    return activities;
 }
 
 //Filter array with type = "IC50", and return new array with 4 relevant properties.
 async function filterArray(){
     let newArr = await manipulateData();
-    newArr.then(array => array.filter( (item) => {
+    newArr.filter( (item) => {
         return item.type === "IC50";
     }).map( (item) => {
         return {
@@ -56,7 +50,7 @@ async function filterArray(){
             canonical_smiles: item.canonical_smiles,
             standard_value: item.standard_value
         }
-    }));
+    });
     return newArr;
 }
 
@@ -117,7 +111,6 @@ async function ConvertToCSV(){
     let csvContent = "data:text/csv;charset=utf-8,"
         + arr.map(inner => inner.join(",")).join("\n");
     return csvContent;
-
 }
 
 async function downloadFile(){
@@ -131,6 +124,8 @@ async function downloadFile(){
 }
 
 downloadFile();
+
+
 
 // //Duplicate Deletion
 // function deleteDuplicates(largeArray){
