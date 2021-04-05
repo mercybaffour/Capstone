@@ -16,7 +16,7 @@
 //Event Listener on Download CSV Button
 function onClickCSV(){
     let button = document.getElementById('csvbutton');
-    return button.addEventListener('click', async (evt) =>  {
+    button.addEventListener('click', async (evt) =>  {
         evt.preventDefault();
         let input = document.getElementById('target');
         let url = "https://www.ebi.ac.uk/chembl/api/data/activity/search.json?limit=100&q=" + input.value;
@@ -27,22 +27,21 @@ function onClickCSV(){
         } catch (err) {
             console.log('failed', err);
         }
-        return data;
+        manipulateData(data);
     });
 }
 
+onClickCSV();
+
 //Extract activities array property from response body
-async function manipulateData(){
-    let data = await onClickCSV() ;
+function manipulateData(data){
     let activities = data.activities;
-    console.log(activities);
-    return activities;
+    filterArray(activities);
 }
 
 //Filter array with type = "IC50", and return new array with 4 relevant properties.
-async function filterArray(){
-    let newArr = await manipulateData();
-    newArr.filter( (item) => {
+function filterArray(arr){
+    let newArr = arr.filter( (item) => {
         return item.type === "IC50";
     }).map( (item) => {
         return {
@@ -51,12 +50,11 @@ async function filterArray(){
             standard_value: item.standard_value
         }
     });
-    return newArr;
+    classifyActivity(newArr);
 }
 
-//Add bioactivity_class to array.
-async function classifyActivity(){
-    let arr = await filterArray();
+//Add bioactivity_class property to objects.
+function classifyActivity(arr){
     for(let i=0; i<arr.length; i++){
         if(arr[i].standard_value >= 10000){
             arr[i].bioactivity_class = "inactive";
@@ -66,12 +64,12 @@ async function classifyActivity(){
             arr[i].bioactivity_class = "intermediary";
         }
     }
-    return arr;
+    displayStructure(arr);
+    toArrayOfArrays(arr);
 }
 
 //Display list of molecules with their canonical smiles and link to structures
-async function displayStructure(){
-    let arr = await classifyActivity();
+function displayStructure(arr){
     let ul = document.createElement('ul');
     ul.style.listStyle = "none";
     let div = document.getElementById('renderList');
@@ -92,29 +90,26 @@ async function displayStructure(){
     }
 }
 
-displayStructure();
 
 //Array of Objects to Array of Arrays
-async function toArrayOfArrays(){
-    let input = await classifyActivity();
-    input.map(function(obj) {
+function toArrayOfArrays(input){
+    let output = input.map(function(obj) {
         return Object.keys(obj).sort().map(function(key) {
             return obj[key];
         });
     });
-    return input;
+    ConvertToCSV(output);
 }
 
 //Convert to CSV format
-async function ConvertToCSV(){
-    let arr = await toArrayOfArrays();
+function ConvertToCSV(arr){
     let csvContent = "data:text/csv;charset=utf-8,"
-        + arr.map(inner => inner.join(",")).join("\n");
-    return csvContent;
+        + arr.map(e => e.join(",")).join("\n");
+    downloadFile(csvContent);
 }
 
-async function downloadFile(){
-    let dataset = await ConvertToCSV();
+//Download file as last step
+function downloadFile(dataset){
     let a = document.createElement('a');
     a.href = 'data:attachment/csv,' +  encodeURIComponent(dataset);
     a.target = '_blank';
@@ -122,18 +117,3 @@ async function downloadFile(){
     document.body.appendChild(a);
     a.click();
 }
-
-downloadFile();
-
-
-
-// //Duplicate Deletion
-// function deleteDuplicates(largeArray){
-//     let stringArray = largeArray.map(JSON.stringify);
-//     console.log(stringArray);
-//     let uniqueStringArray = new Set(stringArray);
-//     console.log(uniqueStringArray);
-//     let uniqueArray = Array.from(uniqueStringArray, JSON.parse);
-//     console.log(uniqueArray);
-//     return uniqueArray;
-// }
