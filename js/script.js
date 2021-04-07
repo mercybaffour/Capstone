@@ -33,17 +33,17 @@ function onClickCSV(){
 
 onClickCSV();
 
-//Extract activities array property from response body
+//Extract the activities array from response body
 function manipulateData(data){
     let activities = data.activities;
     filterArray(activities);
 }
 
-//Filter array with type = "IC50", and return new array with 4 relevant properties.
+//Filter array of objects with type = "IC50", and return new array with objects holding only 3 relevant properties.
 function filterArray(arr){
-    let newArr = arr.filter( (item) => {
+    let newArr = arr.filter( item => {
         return item.type === "IC50";
-    }).map( (item) => {
+    }).map( item => {
         return {
             molecule_chembl_id: item.molecule_chembl_id,
             canonical_smiles: item.canonical_smiles,
@@ -82,29 +82,27 @@ function displayStructure(arr){
         let smiles = document.createElement('li');
         smiles.textContent = arr[i].canonical_smiles
         ul.appendChild(smiles);
-        var link = document.createElement('a');
-        var linkText = document.createTextNode("3D Structure");
+        let link = document.createElement('a');
+        let linkText = document.createTextNode("3D Structure");
         link.setAttribute('href', "https://chemapps.stolaf.edu/jmol/jmol.php?model=" + smiles.textContent);
         link.appendChild(linkText);
         ul.appendChild(link);
     }
 }
 
-
 //Array of Objects to Array of Arrays
 function toArrayOfArrays(input){
-    let output = input.map(function(obj) {
-        return Object.keys(obj).sort().map(function(key) {
+    let output = input.map( obj => {
+        return Object.keys(obj).sort().map( key => {
             return obj[key];
         });
     });
-    ConvertToCSV(output);
+    convertToCSV(output);
 }
 
 //Convert to CSV format
-function ConvertToCSV(arr){
-    let csvContent = "data:text/csv;charset=utf-8,"
-        + arr.map(e => e.join(",")).join("\n");
+function convertToCSV(arr){
+    let csvContent = arr.map(e => e.join(",")).join("\n");
     downloadFile(csvContent);
 }
 
@@ -113,7 +111,7 @@ function downloadFile(dataset){
     let a = document.createElement('a');
     a.href = 'data:attachment/csv,' +  encodeURIComponent(dataset);
     a.target = '_blank';
-    a.download = 'myFile.csv';
+    a.download = 'projectFile.csv';
     document.body.appendChild(a);
     a.click();
 }
